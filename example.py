@@ -4,22 +4,13 @@ import transforms  # Importa el módulo transforms.py para aplicar transformacio
 """Rectángulo de tres por dos píxeles, con los colores rojo (los dos píxeles de arriba)
 y azul (los dos píxeles de abajo)
 """
-imagen = {
-    'width': 3,
-    'height': 2,
-    'pixels': [
-        (255, 0, 0), (255, 0, 0), (255, 0, 0),
-        (0, 0, 255), (0, 0, 255), (0, 0, 255)
-    ]
-}
-
-# Guardar la imagen original
-images.write_img(image=imagen, filename='imagen_ejemplo.png')
+# Imagen original
+imagen = images.read_img("cafe.jpg")
 
 # Convertir la imagen a escala de grises y guardarla
 grayscale_image = transforms.grayscale(imagen)
-images.write_img(image=grayscale_image, filename='imagen_grayscale.png')
+images.write_img(image=grayscale_image, filename='cafe_grayscale.jpg')
 
 # Espejar la imagen horizontalmente y guardarla
 mirrored_image = transforms.mirror(imagen)
-images.write_img(image=mirrored_image, filename='imagen_mirrored.png')
+images.write_img(image=mirrored_image, filename='cafe_mirrored.jpg')
