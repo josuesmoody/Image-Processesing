@@ -59,9 +59,9 @@ def rotate(image: dict, direction: str) -> dict:
     rotated_image = create_blank(height, width)  # Rotated image will have swapped width and height
     for y in range(height):
         for x in range(width):
-            if direction == 'right':
+            if direction == 'left':
                 rotated_image['pixels'][y + height * (width - 1 - x)] = image['pixels'][x + width * y]
-            elif direction == 'left':
+            elif direction == 'right':
                 rotated_image['pixels'][(height - 1 - y) + height * x] = image['pixels'][x + width * y]
     return rotated_image
 
