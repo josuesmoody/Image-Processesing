@@ -42,4 +42,8 @@ images.write_img(image=rotated_image_left, filename='imagenes_transformadas/cafe
 shifted_image = transforms.shift(imagen, shift_right=10, shift_down=10)
 images.write_img(image=shifted_image, filename='imagenes_transformadas/cafe_shifted.png')
 
+# Recortar la imagen y guardarla
+cropped_image = transforms.crop(imagen, x=100, y=100, width=200, height=200)
+images.write_img(image=cropped_image, filename='imagenes_transformadas/cafe_cropped.png')
+
 print("Transformaciones aplicadas con éxito. Las imágenes transformadas se han guardado en la carpeta 'imagenes_transformadas'.")
