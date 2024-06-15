@@ -29,7 +29,7 @@ def main():
         return
 
     try:
-        output_file = os.path.join('imagenes_transformadas', 'cafe_trans.jpg')
+        output_file = os.path.join('imagenes_transformadas', 'cafe_trans_multi.jpg')
         images.write_img(image, output_file)
         print(f"Imagen transformada guardada en '{output_file}'")
     except Exception as e:
