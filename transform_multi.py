@@ -1,76 +1,39 @@
-import sys
-from images import read_img, write_img
-from transforms import mirror, grayscale, blur, change_colors, rotate, shift, crop, filter
+import os
+import images
+import transforms
 
 def main():
-    if len(sys.argv) < 3:
-        print("Usage: python transform_multi.py <filename> <transformation1> <args1> <transformation2> <args2> ...")
+    filename = "cafe.jpg"  # Nombre de la imagen de entrada
+
+    if not os.path.exists('imagenes_transformadas'):
+        os.makedirs('imagenes_transformadas')
+
+    try:
+        image = images.read_img(filename)
+    except Exception as e:
+        print(f"Error al cargar la imagen '{filename}': {e}")
         return
 
-    filename = sys.argv[1]
-    image = read_img(filename)
+    try:
+        # Aplicar transformaciones
+        image = transforms.grayscale(image)
+        print("Transformación 'grayscale' aplicada con éxito.")
+        
+        image = transforms.mirror(image)
+        print("Transformación 'mirror' aplicada con éxito.")
+        
+        image = transforms.blur(image)
+        print("Transformación 'blur' aplicada con éxito.")
+    except Exception as e:
+        print(f"Error al aplicar transformaciones: {e}")
+        return
 
-    transformations = sys.argv[2:]
-    transformed_image = image
+    try:
+        output_file = os.path.join('imagenes_transformadas', 'cafe_trans.jpg')
+        images.write_img(image, output_file)
+        print(f"Imagen transformada guardada en '{output_file}'")
+    except Exception as e:
+        print(f"Error al guardar la imagen transformada: {e}")
 
-    i = 0
-    while i < len(transformations):
-        transformation = transformations[i]
-        if transformation == 'mirror':
-            transformed_image = mirror(transformed_image)
-        elif transformation == 'grayscale':
-            transformed_image = grayscale(transformed_image)
-        elif transformation == 'blur':
-            transformed_image = blur(transformed_image)
-        elif transformation == 'change_colors':
-            if len(transformations) < i + 3:
-                print("Usage: python transform_multi.py <filename> change_colors <original_colors> <new_colors>")
-                return
-            original_colors = [tuple(map(int, color.split(','))) for color in transformations[i+1].split(':')]
-            new_colors = [tuple(map(int, color.split(','))) for color in transformations[i+2].split(':')]
-            transformed_image = change_colors(transformed_image, original_colors, new_colors)
-            i += 2  # Skip next two elements
-        elif transformation == 'rotate':
-            if len(transformations) < i + 2:
-                print("Usage: python transform_multi.py <filename> rotate <direction>")
-                return
-            direction = transformations[i+1]
-            transformed_image = rotate(transformed_image, direction)
-            i += 1  # Skip next element
-        elif transformation == 'shift':
-            if len(transformations) < i + 3:
-                print("Usage: python transform_multi.py <filename> shift <horizontal> <vertical>")
-                return
-            horizontal = int(transformations[i+1])
-            vertical = int(transformations[i+2])
-            transformed_image = shift(transformed_image, horizontal, vertical)
-            i += 2  # Skip next two elements
-        elif transformation == 'crop':
-            if len(transformations) < i + 5:
-                print("Usage: python transform_multi.py <filename> crop <x> <y> <width> <height>")
-                return
-            x = int(transformations[i+1])
-            y = int(transformations[i+2])
-            width = int(transformations[i+3])
-            height = int(transformations[i+4])
-            transformed_image = crop(transformed_image, x, y, width, height)
-            i += 4  # Skip next four elements
-        elif transformation == 'filter':
-            if len(transformations) < i + 4:
-                print("Usage: python transform_multi.py <filename> filter <r> <g> <b>")
-                return
-            r = float(transformations[i+1])
-            g = float(transformations[i+2])
-            b = float(transformations[i+3])
-            transformed_image = filter(transformed_image, r, g, b)
-            i += 3  # Skip next three elements
-        else:
-            print("Transformation not recognized:", transformation)
-            return
-
-        i += 1  # Move to the next transformation
-
-    write_img(transformed_image, filename.split('.')[0] + '_trans.png')
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
