@@ -46,4 +46,8 @@ images.write_img(image=shifted_image, filename='imagenes_transformadas/cafe_shif
 cropped_image = transforms.crop(imagen, x=100, y=100, width=200, height=200)
 images.write_img(image=cropped_image, filename='imagenes_transformadas/cafe_cropped.png')
 
+# Aplicar un filtro a la imagen y guardarla
+filtered_image = transforms.filter(imagen, r=0.5, g=1.5, b=0.5)
+images.write_img(image=filtered_image, filename='imagenes_transformadas/cafe_filtered.png')
+
 print("Transformaciones aplicadas con éxito. Las imágenes transformadas se han guardado en la carpeta 'imagenes_transformadas'.")
