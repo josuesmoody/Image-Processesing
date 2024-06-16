@@ -4,7 +4,7 @@ from images import read_img, write_img
 from transforms import mirror, grayscale, blur, change_colors, rotate, shift, crop, filter
 
 def main():
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 3 or len(sys.argv) % 2 != 1:
         print("Usage: python transform_multi.py <filename> <transformation1> <args1> <transformation2> <args2> ...")
         return
     
@@ -19,7 +19,8 @@ def main():
 
     try:
         transformed_image = image
-        for i in range(0, len(transformations), 2):
+        i = 0
+        while i < len(transformations):
             transformation = transformations[i]
             if transformation == 'mirror':
                 transformed_image = mirror(transformed_image)
@@ -37,7 +38,7 @@ def main():
                     return
                 new_colors = [tuple(map(int, color.split(','))) for color in transformations[i + 2].split(':')]
                 transformed_image = change_colors(transformed_image, original_colors, new_colors)
-                i += 1
+                i += 2
             elif transformation == 'rotate':
                 if i + 1 >= len(transformations):
                     print("Falta argumento para 'rotate'")
@@ -52,7 +53,7 @@ def main():
                 horizontal = int(transformations[i + 1])
                 vertical = int(transformations[i + 2])
                 transformed_image = shift(transformed_image, horizontal, vertical)
-                i += 2
+                i += 3
             elif transformation == 'crop':
                 if i + 4 >= len(transformations):
                     print("Faltan argumentos para 'crop'")
@@ -75,6 +76,8 @@ def main():
             else:
                 print(f"Transformación '{transformation}' no reconocida")
                 return
+
+            i += 1
 
         # Carpeta para guardar las imágenes transformadas
         output_dir = 'imagenes_transformadas'
